@@ -25,7 +25,7 @@ const rooms: Room[] = [
     titleEm: 'that fits you.',
     description: 'Before the tools, before the funding. Get clear on whether you are naturally product, service, or hybrid inclined.',
     cta: 'Take the 3-minute quiz',
-    href: 'https://juststart-quizz.vercel.app',
+    href: 'https://juststart-quiz.vercel.app',
     note: 'No sign-up. Instant result.',
     accent: 'teal',
     bg: 'https://iili.io/C1Y1Lla.jpg',
@@ -119,7 +119,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="logo">JS</div>
+      <div className="logo">JustStart</div>
 
       <nav className="progress" aria-label="Rooms">
         {rooms.map((r, i) => (
