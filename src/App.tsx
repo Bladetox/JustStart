@@ -63,7 +63,7 @@ const rooms: Room[] = [
     title: 'Fund what is',
     titleEm: 'already working.',
     description: 'Growth capital makes more sense when you have direction, a system, and a clear reason for the investment.',
-    cta: 'Explore Funding Opportunities',
+    cta: 'Explore Funding',
     href: 'https://vula-lac.vercel.app',
     note: 'Funding for every stage of your business.',
     accent: 'sage',
