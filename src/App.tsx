@@ -54,7 +54,7 @@ const rooms: Room[] = [
     href: 'https://www.nextslot.co.za',
     note: 'Bookings with more clarity.',
     accent: 'gold',
-    bg: 'https://iili.io/C1YvWMJ.jpg',
+    bg: 'https://iili.io/C1YvVna.jpg',
   },
   {
     id: 'funding',
@@ -67,7 +67,7 @@ const rooms: Room[] = [
     href: 'https://vula-lac.vercel.app',
     note: 'Funding for every stage.',
     accent: 'sage',
-    bg: 'https://iili.io/C1YvVna.jpg',
+    bg: 'https://iili.io/C1YvWMJ.jpg',
   },
 ]
 
