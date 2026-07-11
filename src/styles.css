@@ -76,21 +76,22 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
 
 /* ── Entry transition keyframes ── */
 @keyframes door-expand {
-  0%   { transform: scale(1);    opacity: 1; border-radius: 45px 45px 0 0; }
-  40%  { transform: scale(6);    opacity: 1; border-radius: 80px 80px 0 0; }
-  70%  { transform: scale(18);   opacity: 1; border-radius: 120px; }
-  100% { transform: scale(28);   opacity: 0; border-radius: 120px; }
+  0%   { transform: scale(1);  opacity: 1; border-radius: 45px 45px 0 0; }
+  20%  { transform: scale(3);  opacity: 1; border-radius: 60px 60px 0 0; }
+  45%  { transform: scale(8);  opacity: 1; border-radius: 90px; }
+  70%  { transform: scale(16); opacity: 1; border-radius: 120px; }
+  100% { transform: scale(26); opacity: 0; border-radius: 120px; }
 }
 
 @keyframes entry-fade-out {
   0%   { opacity: 1; }
-  60%  { opacity: 1; }
+  65%  { opacity: 1; }
   100% { opacity: 0; }
 }
 
 @keyframes entry-content-out {
   0%   { opacity: 1; transform: translateY(0); }
-  25%  { opacity: 0; transform: translateY(-12px); }
+  20%  { opacity: 0; transform: translateY(-12px); }
   100% { opacity: 0; transform: translateY(-12px); }
 }
 
@@ -184,14 +185,14 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
 
 /* Entry exiting state */
 .entry--exiting {
-  animation: entry-fade-out 0.95s var(--ease) forwards;
+  animation: entry-fade-out 1.6s var(--ease) forwards;
   pointer-events: none;
 }
 .entry--exiting .entry__content {
-  animation: entry-content-out 0.4s ease forwards;
+  animation: entry-content-out 0.5s ease forwards;
 }
 .entry--exiting .entry__door-frame {
-  animation: door-expand 0.95s var(--ease) forwards;
+  animation: door-expand 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   transform-origin: center center;
   background: rgba(255,255,255,0.04);
   border-color: rgba(221,224,221,0.5);
@@ -456,7 +457,7 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
 
 .room__journey {
   position: absolute;
-  bottom: 2rem;
+  bottom: 4.5rem;
   right: 8vw;
   z-index: 6;
   display: flex;
@@ -534,6 +535,6 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
   .room__journey {
     right: 50%;
     transform: translateX(50%);
-    bottom: 1.5rem;
+    bottom: 3.5rem;
   }
 }

@@ -98,7 +98,7 @@ export default function App() {
 
   const handleEnter = () => {
     setExiting(true)
-    setTimeout(() => setEntered(true), 950)
+    setTimeout(() => setEntered(true), 1550)
   }
 
   if (!entered) {
@@ -144,20 +144,16 @@ export default function App() {
           ref={el => { sectionRefs.current[i] = el }}
           className={`room room--${room.accent}${activeIndex === i ? ' room--active' : ''}`}
         >
-          {/* Background image */}
           <div
             className="room__bg"
             style={{ backgroundImage: `url(${room.bg})` }}
           />
-
-          {/* Overlay layers */}
           <div className="room__overlay" />
           <div className="room__noise" />
           <div className="room__vignette" />
           <div className="room__scanlines" />
           <div className={`room__light room__light--${room.accent}`} />
 
-          {/* Left title block */}
           <div className="room__left">
             <p className="room__no">{room.no} <span>/</span> 04</p>
             <h2 className="room__title">
@@ -167,7 +163,6 @@ export default function App() {
             <p className="room__desc">{room.description}</p>
           </div>
 
-          {/* Right door */}
           <div className="room__right">
             <a
               href={room.href}
@@ -183,14 +178,12 @@ export default function App() {
             </a>
           </div>
 
-          {/* Floor plaque */}
           <div className="room__plaque">
             <span className={`room__plaque-line room__plaque-line--${room.accent}`} />
             <span className="room__plaque-text">{room.eyebrow}</span>
             <span className={`room__plaque-line room__plaque-line--${room.accent}`} />
           </div>
 
-          {/* Journey cue — room 01 only */}
           {i === 0 && (
             <div className="room__journey">
               <span className="room__journey-text">Begin your journey</span>
