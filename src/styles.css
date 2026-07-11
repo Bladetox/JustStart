@@ -169,11 +169,11 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.2em;
-  color: var(--text-faint);
+  color: #ffffff;
   text-transform: uppercase;
   transition: color 0.4s ease;
 }
-.logo:hover { color: var(--text-muted); }
+.logo:hover { color: rgba(255,255,255,0.6); }
 
 /* Progress dots */
 .progress {
@@ -274,7 +274,7 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
 .room__no {
   font-size: 0.65rem;
   letter-spacing: 0.2em;
-  color: var(--text-faint);
+  color: #ffffff;
   font-variant-numeric: tabular-nums;
 }
 .room__no span { opacity: 0.4; }
@@ -433,43 +433,19 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
   .room__right { align-self: center; }
   .room__desc { font-size: 0.85rem; }
 
-  .door {
-    width: 90px;
-    height: 150px;
-  }
+  .door { width: 90px; height: 150px; }
 
-  /* Option A: always-on border glow + inner light */
-  .door--teal {
-    border-color: rgba(45,212,191,0.38);
-  }
-  .door--teal::before {
-    opacity: 1;
-  }
-  .door--sand {
-    border-color: rgba(212,169,106,0.38);
-  }
-  .door--sand::before {
-    opacity: 1;
-  }
-  .door--gold {
-    border-color: rgba(240,192,64,0.38);
-  }
-  .door--gold::before {
-    opacity: 1;
-  }
-  .door--sage {
-    border-color: rgba(134,184,154,0.38);
-  }
-  .door--sage::before {
-    opacity: 1;
-  }
+  .door--teal { border-color: rgba(45,212,191,0.38); }
+  .door--teal::before { opacity: 1; }
+  .door--sand { border-color: rgba(212,169,106,0.38); }
+  .door--sand::before { opacity: 1; }
+  .door--gold { border-color: rgba(240,192,64,0.38); }
+  .door--gold::before { opacity: 1; }
+  .door--sage { border-color: rgba(134,184,154,0.38); }
+  .door--sage::before { opacity: 1; }
 
-  /* Option A: always-on bright CTA text */
-  .door .door__cta {
-    color: var(--text);
-  }
+  .door .door__cta { color: var(--text); }
 
-  /* Option D: breathing pulse animation per accent */
   .door--teal { animation: pulse-teal 3s ease-in-out infinite; }
   .door--sand { animation: pulse-sand 3s ease-in-out infinite; }
   .door--gold { animation: pulse-gold 3s ease-in-out infinite; }
