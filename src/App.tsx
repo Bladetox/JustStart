@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { ArrowDown, ArrowLeft, ArrowUpRight, Check, ChevronRight, DoorOpen, Menu, Moon, Sun, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowUpRight, ArrowDown } from 'lucide-react'
 
 type Accent = 'teal' | 'sand' | 'gold' | 'sage'
 
@@ -7,7 +7,8 @@ type Room = {
   id: string
   no: string
   eyebrow: string
-  title: React.ReactNode
+  title: string
+  titleEm: string
   description: string
   cta: string
   href: string
@@ -20,8 +21,9 @@ const rooms: Room[] = [
     id: 'start',
     no: '01',
     eyebrow: 'The starting point',
-    title: <>Find the model<br />that <em>fits you.</em></>,
-    description: 'Before the tools, before the funding. Get clear on whether you are naturally product, service, or hybrid inclined.',
+    title: 'Find the model',
+    titleEm: 'that fits you.',
+    description: 'Before the tools, before the funding — get clear on whether you are naturally product, service, or hybrid inclined.',
     cta: 'Take the 3-minute quiz',
     href: 'https://juststart-quizz.vercel.app',
     note: 'No sign-up. Instant result.',
@@ -31,7 +33,8 @@ const rooms: Room[] = [
     id: 'setup',
     no: '02',
     eyebrow: 'The first system',
-    title: <>Start taking<br /><em>bookings today.</em></>,
+    title: 'Start taking',
+    titleEm: 'bookings today.',
     description: 'A simple Google Forms and Calendar setup for service businesses that need a working first system, not more complexity.',
     cta: 'Open the free setup',
     href: 'https://docs.google.com/document/d/1-BhoqVYTL_RICL1SofUBMZC2_5Qp6ZDZkPx-RyMTVPw/edit?usp=drivesdk',
@@ -42,7 +45,8 @@ const rooms: Room[] = [
     id: 'nextslot',
     no: '03',
     eyebrow: 'The main room',
-    title: <>When manual<br />starts costing <em>you.</em></>,
+    title: 'When manual starts',
+    titleEm: 'costing you.',
     description: 'You have demand. Your free setup did its job. Now use a booking system made for South African service businesses ready to grow.',
     cta: 'Enter NextSlot',
     href: 'https://www.nextslot.co.za',
@@ -53,7 +57,8 @@ const rooms: Room[] = [
     id: 'funding',
     no: '04',
     eyebrow: 'The capital room',
-    title: <>Fund what is<br /><em>already working.</em></>,
+    title: 'Fund what is',
+    titleEm: 'already working.',
     description: 'Growth capital makes more sense when you have direction, a system, and a clear reason for the investment.',
     cta: 'Explore Vula funding',
     href: 'https://vula-lac.vercel.app',
@@ -62,147 +67,103 @@ const rooms: Room[] = [
   },
 ]
 
-function Mark() {
-  return (
-    <div className="mark" aria-label="Just Start">
-      <i>J</i><span>S</span>
-    </div>
-  )
-}
-
-function Arrow() {
-  return (
-    <span className="arrow-icon" aria-hidden="true">
-      <ArrowUpRight size={16} />
-    </span>
-  )
-}
-
-function RoomCard({ room, onEnter }: { room: Room; onEnter: (room: Room) => void }) {
-  return (
-    <article className={`room-card room-card--${room.accent}`} data-id={room.id}>
-      <div className="room-card__eyebrow">
-        <span className="room-card__no">{room.no}</span>
-        <span>{room.eyebrow}</span>
-      </div>
-      <h2 className="room-card__title">{room.title}</h2>
-      <p className="room-card__description">{room.description}</p>
-      <div className="room-card__footer">
-        <button className="room-card__cta" onClick={() => onEnter(room)}>
-          {room.cta} <Arrow />
-        </button>
-        <span className="room-card__note">
-          <Check size={12} /> {room.note}
-        </span>
-      </div>
-    </article>
-  )
-}
-
-function RoomModal({ room, onClose }: { room: Room; onClose: () => void }) {
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [onClose])
-
-  return (
-    <div className={`modal modal--${room.accent}`} role="dialog" aria-modal="true" aria-label={`Room ${room.no}`}>
-      <div className="modal__overlay" onClick={onClose} />
-      <div className="modal__panel">
-        <button className="modal__back" onClick={onClose}>
-          <ArrowLeft size={16} /> Back
-        </button>
-        <div className="modal__eyebrow">
-          <DoorOpen size={14} />
-          <span>{room.eyebrow}</span>
-        </div>
-        <h2 className="modal__title">{room.title}</h2>
-        <p className="modal__description">{room.description}</p>
-        <a
-          className="modal__cta"
-          href={room.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {room.cta} <ArrowUpRight size={16} />
-        </a>
-        <p className="modal__note">
-          <Check size={12} /> {room.note}
-        </p>
-      </div>
-    </div>
-  )
-}
-
 export default function App() {
-  const [dark, setDark] = useState(true)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [activeRoom, setActiveRoom] = useState<Room | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const sectionRefs = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
-  }, [dark])
+    const observers: IntersectionObserver[] = []
+    sectionRefs.current.forEach((el, i) => {
+      if (!el) return
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveIndex(i) },
+        { threshold: 0.6 }
+      )
+      obs.observe(el)
+      observers.push(obs)
+    })
+    return () => observers.forEach(o => o.disconnect())
+  }, [])
 
-  useEffect(() => {
-    document.body.style.overflow = activeRoom ? 'hidden' : ''
-  }, [activeRoom])
+  const scrollTo = (i: number) => {
+    sectionRefs.current[i]?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
     <div className="app">
-      {/* Nav */}
-      <nav className="nav">
-        <Mark />
-        <div className="nav__actions">
-          <button className="nav__icon-btn" onClick={() => setDark(d => !d)} aria-label="Toggle theme">
-            {dark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <button className="nav__icon-btn" onClick={() => setMenuOpen(m => !m)} aria-label="Menu">
-            {menuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-        </div>
-        {menuOpen && (
-          <div className="nav__dropdown">
-            {rooms.map(r => (
-              <button key={r.id} className="nav__dropdown-item" onClick={() => { setActiveRoom(r); setMenuOpen(false) }}>
-                <span className="nav__dropdown-no">{r.no}</span>
-                {r.eyebrow}
-                <ChevronRight size={14} />
-              </button>
-            ))}
-          </div>
-        )}
+      {/* Logo */}
+      <div className="logo" aria-label="Just Start">JS</div>
+
+      {/* Progress dots */}
+      <nav className="progress" aria-label="Room navigation">
+        {rooms.map((r, i) => (
+          <button
+            key={r.id}
+            className={`progress__dot progress__dot--${r.accent}${activeIndex === i ? ' active' : ''}`}
+            onClick={() => scrollTo(i)}
+            aria-label={r.eyebrow}
+          />
+        ))}
+        <div
+          className="progress__line"
+          style={{ height: `${(activeIndex / (rooms.length - 1)) * 100}%` }}
+        />
       </nav>
 
-      {/* Hero */}
-      <header className="hero">
-        <p className="hero__eyebrow">A place to begin</p>
-        <h1 className="hero__title">
-          Every business starts<br />with a <em>single step.</em>
-        </h1>
-        <p className="hero__sub">Four rooms. One direction. Your starting point is here.</p>
-        <div className="hero__scroll" aria-hidden="true">
-          <ArrowDown size={18} />
-        </div>
-      </header>
+      {/* Rooms */}
+      {rooms.map((room, i) => (
+        <section
+          key={room.id}
+          ref={el => { sectionRefs.current[i] = el }}
+          className={`room room--${room.accent}${activeIndex === i ? ' room--active' : ''}`}
+        >
+          {/* Background number */}
+          <span className="room__bg-no" aria-hidden="true">{room.no}</span>
 
-      {/* Rooms grid */}
-      <main className="rooms">
-        {rooms.map(room => (
-          <RoomCard key={room.id} room={room} onEnter={setActiveRoom} />
-        ))}
-      </main>
+          {/* Ambient glow */}
+          <div className={`room__glow room__glow--${room.accent}`} />
 
-      {/* Footer */}
-      <footer className="footer">
-        <Mark />
-        <p>Just Start &mdash; Find your starting point.</p>
-      </footer>
+          <div className="room__content">
+            <p className="room__eyebrow">
+              <span className="room__eyebrow-no">{room.no}</span>
+              {room.eyebrow}
+            </p>
 
-      {/* Modal */}
-      {activeRoom && (
-        <RoomModal room={activeRoom} onClose={() => setActiveRoom(null)} />
-      )}
+            <h2 className="room__title">
+              {room.title}<br />
+              <em className={`room__title-em room__title-em--${room.accent}`}>{room.titleEm}</em>
+            </h2>
+
+            <p className="room__description">{room.description}</p>
+
+            <div className="room__actions">
+              <a
+                className={`room__cta room__cta--${room.accent}`}
+                href={room.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {room.cta}
+                <ArrowUpRight size={15} />
+              </a>
+              <span className="room__note">{room.note}</span>
+            </div>
+          </div>
+
+          {/* Scroll hint — only on first room */}
+          {i === 0 && (
+            <div className="room__scroll-hint" aria-hidden="true">
+              <ArrowDown size={16} />
+              <span>scroll</span>
+            </div>
+          )}
+
+          {/* Room number label bottom right */}
+          <span className="room__label" aria-hidden="true">{room.no} / 04</span>
+        </section>
+      ))}
+
+      {/* Entry hero — prepended before rooms via CSS order */}
     </div>
   )
 }
