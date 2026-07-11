@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowUpRight, ArrowDown } from 'lucide-react'
 
 type Accent = 'teal' | 'sand' | 'gold' | 'sage'
 
@@ -23,7 +22,7 @@ const rooms: Room[] = [
     eyebrow: 'The starting point',
     title: 'Find the model',
     titleEm: 'that fits you.',
-    description: 'Before the tools, before the funding. Find out whether you are naturally product, service, or hybrid inclined, based on your personality',
+    description: 'Before the tools, before the funding — get clear on whether you are naturally product, service, or hybrid inclined.',
     cta: 'Take the 3-minute quiz',
     href: 'https://juststart-quizz.vercel.app',
     note: 'No sign-up. Instant result.',
@@ -69,6 +68,7 @@ const rooms: Room[] = [
 
 export default function App() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [entered, setEntered] = useState(false)
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function App() {
       if (!el) return
       const obs = new IntersectionObserver(
         ([entry]) => { if (entry.isIntersecting) setActiveIndex(i) },
-        { threshold: 0.6 }
+        { threshold: 0.55 }
       )
       obs.observe(el)
       observers.push(obs)
@@ -89,13 +89,30 @@ export default function App() {
     sectionRefs.current[i]?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  if (!entered) {
+    return (
+      <div className="entry">
+        <div className="entry__noise" />
+        <div className="entry__vignette" />
+        <div className="entry__content">
+          <p className="entry__label">Just Start</p>
+          <h1 className="entry__title">Find your<br /><em>starting point.</em></h1>
+          <p className="entry__sub">Four rooms. One direction.</p>
+          <button className="entry__door" onClick={() => setEntered(true)}>
+            <span className="entry__door-frame">
+              <span className="entry__door-text">Enter</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="app">
-      {/* Logo */}
-      <div className="logo" aria-label="Just Start">JS</div>
+      <div className="logo">JS</div>
 
-      {/* Progress dots */}
-      <nav className="progress" aria-label="Room navigation">
+      <nav className="progress" aria-label="Rooms">
         {rooms.map((r, i) => (
           <button
             key={r.id}
@@ -104,66 +121,59 @@ export default function App() {
             aria-label={r.eyebrow}
           />
         ))}
-        <div
-          className="progress__line"
-          style={{ height: `${(activeIndex / (rooms.length - 1)) * 100}%` }}
-        />
       </nav>
 
-      {/* Rooms */}
       {rooms.map((room, i) => (
         <section
           key={room.id}
           ref={el => { sectionRefs.current[i] = el }}
           className={`room room--${room.accent}${activeIndex === i ? ' room--active' : ''}`}
         >
-          {/* Background number */}
-          <span className="room__bg-no" aria-hidden="true">{room.no}</span>
+          {/* Noise layer */}
+          <div className="room__noise" />
 
-          {/* Ambient glow */}
-          <div className={`room__glow room__glow--${room.accent}`} />
+          {/* Vignette */}
+          <div className="room__vignette" />
 
-          <div className="room__content">
-            <p className="room__eyebrow">
-              <span className="room__eyebrow-no">{room.no}</span>
-              {room.eyebrow}
-            </p>
+          {/* Light source */}
+          <div className={`room__light room__light--${room.accent}`} />
 
+          {/* Scanlines */}
+          <div className="room__scanlines" />
+
+          {/* Left — title block */}
+          <div className="room__left">
+            <p className="room__no">{room.no} <span>/</span> 04</p>
             <h2 className="room__title">
               {room.title}<br />
-              <em className={`room__title-em room__title-em--${room.accent}`}>{room.titleEm}</em>
+              <em className={`room__em--${room.accent}`}>{room.titleEm}</em>
             </h2>
-
-            <p className="room__description">{room.description}</p>
-
-            <div className="room__actions">
-              <a
-                className={`room__cta room__cta--${room.accent}`}
-                href={room.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {room.cta}
-                <ArrowUpRight size={15} />
-              </a>
-              <span className="room__note">{room.note}</span>
-            </div>
+            <p className="room__desc">{room.description}</p>
           </div>
 
-          {/* Scroll hint — only on first room */}
-          {i === 0 && (
-            <div className="room__scroll-hint" aria-hidden="true">
-              <ArrowDown size={16} />
-              <span>scroll</span>
-            </div>
-          )}
+          {/* Right — floating door */}
+          <div className="room__right">
+            <a
+              href={room.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`door door--${room.accent}`}
+            >
+              <span className="door__inner">
+                <span className="door__cta">{room.cta}</span>
+                <span className="door__note">{room.note}</span>
+              </span>
+            </a>
+          </div>
 
-          {/* Room number label bottom right */}
-          <span className="room__label" aria-hidden="true">{room.no} / 04</span>
+          {/* Floor plaque */}
+          <div className="room__plaque">
+            <span className={`room__plaque-line room__plaque-line--${room.accent}`} />
+            <span className="room__plaque-text">{room.eyebrow}</span>
+            <span className={`room__plaque-line room__plaque-line--${room.accent}`} />
+          </div>
         </section>
       ))}
-
-      {/* Entry hero — prepended before rooms via CSS order */}
     </div>
   )
 }
