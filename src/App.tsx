@@ -13,6 +13,7 @@ type Room = {
   href: string
   note: string
   accent: Accent
+  bg: string
 }
 
 const rooms: Room[] = [
@@ -22,11 +23,12 @@ const rooms: Room[] = [
     eyebrow: 'The starting point',
     title: 'Find the model',
     titleEm: 'that fits you.',
-    description: 'Before the tools, before the funding — get clear on whether you are naturally product, service, or hybrid inclined.',
+    description: 'Before the tools, before the funding. Get clear on whether you are naturally product, service, or hybrid inclined.',
     cta: 'Take the 3-minute quiz',
     href: 'https://juststart-quizz.vercel.app',
     note: 'No sign-up. Instant result.',
     accent: 'teal',
+    bg: 'https://iili.io/C1Y1Lla.jpg',
   },
   {
     id: 'setup',
@@ -39,6 +41,7 @@ const rooms: Room[] = [
     href: 'https://docs.google.com/document/d/1-BhoqVYTL_RICL1SofUBMZC2_5Qp6ZDZkPx-RyMTVPw/edit?usp=drivesdk',
     note: 'Free. Built to use today.',
     accent: 'sand',
+    bg: 'https://iili.io/C1Y1PiF.jpg',
   },
   {
     id: 'nextslot',
@@ -51,6 +54,7 @@ const rooms: Room[] = [
     href: 'https://www.nextslot.co.za',
     note: 'Bookings with more clarity.',
     accent: 'gold',
+    bg: 'https://iili.io/C1YvWMJ.jpg',
   },
   {
     id: 'funding',
@@ -63,6 +67,7 @@ const rooms: Room[] = [
     href: 'https://vula-lac.vercel.app',
     note: 'Funding for every stage.',
     accent: 'sage',
+    bg: 'https://iili.io/C1YvVna.jpg',
   },
 ]
 
@@ -72,18 +77,19 @@ export default function App() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
+    if (!entered) return
     const observers: IntersectionObserver[] = []
     sectionRefs.current.forEach((el, i) => {
       if (!el) return
       const obs = new IntersectionObserver(
         ([entry]) => { if (entry.isIntersecting) setActiveIndex(i) },
-        { threshold: 0.55 }
+        { threshold: 0.4 }
       )
       obs.observe(el)
       observers.push(obs)
     })
     return () => observers.forEach(o => o.disconnect())
-  }, [])
+  }, [entered])
 
   const scrollTo = (i: number) => {
     sectionRefs.current[i]?.scrollIntoView({ behavior: 'smooth' })
@@ -92,6 +98,10 @@ export default function App() {
   if (!entered) {
     return (
       <div className="entry">
+        <div
+          className="entry__bg"
+          style={{ backgroundImage: 'url(https://iili.io/C1Y1sKg.jpg)' }}
+        />
         <div className="entry__noise" />
         <div className="entry__vignette" />
         <div className="entry__content">
@@ -129,19 +139,20 @@ export default function App() {
           ref={el => { sectionRefs.current[i] = el }}
           className={`room room--${room.accent}${activeIndex === i ? ' room--active' : ''}`}
         >
-          {/* Noise layer */}
+          {/* Background image */}
+          <div
+            className="room__bg"
+            style={{ backgroundImage: `url(${room.bg})` }}
+          />
+
+          {/* Overlay layers */}
+          <div className="room__overlay" />
           <div className="room__noise" />
-
-          {/* Vignette */}
           <div className="room__vignette" />
-
-          {/* Light source */}
+          <div className="room__scanlines" />
           <div className={`room__light room__light--${room.accent}`} />
 
-          {/* Scanlines */}
-          <div className="room__scanlines" />
-
-          {/* Left — title block */}
+          {/* Left title block */}
           <div className="room__left">
             <p className="room__no">{room.no} <span>/</span> 04</p>
             <h2 className="room__title">
@@ -151,7 +162,7 @@ export default function App() {
             <p className="room__desc">{room.description}</p>
           </div>
 
-          {/* Right — floating door */}
+          {/* Right door */}
           <div className="room__right">
             <a
               href={room.href}
