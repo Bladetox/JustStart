@@ -74,6 +74,31 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
   );
 }
 
+/* ── Entry transition keyframes ── */
+@keyframes door-expand {
+  0%   { transform: scale(1);    opacity: 1; border-radius: 45px 45px 0 0; }
+  40%  { transform: scale(6);    opacity: 1; border-radius: 80px 80px 0 0; }
+  70%  { transform: scale(18);   opacity: 1; border-radius: 120px; }
+  100% { transform: scale(28);   opacity: 0; border-radius: 120px; }
+}
+
+@keyframes entry-fade-out {
+  0%   { opacity: 1; }
+  60%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes entry-content-out {
+  0%   { opacity: 1; transform: translateY(0); }
+  25%  { opacity: 0; transform: translateY(-12px); }
+  100% { opacity: 0; transform: translateY(-12px); }
+}
+
+@keyframes rooms-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 /* Entry */
 .entry {
   position: fixed;
@@ -157,8 +182,28 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
 }
 .entry__door:hover .entry__door-text { color: var(--text-muted); }
 
+/* Entry exiting state */
+.entry--exiting {
+  animation: entry-fade-out 0.95s var(--ease) forwards;
+  pointer-events: none;
+}
+.entry--exiting .entry__content {
+  animation: entry-content-out 0.4s ease forwards;
+}
+.entry--exiting .entry__door-frame {
+  animation: door-expand 0.95s var(--ease) forwards;
+  transform-origin: center center;
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(221,224,221,0.5);
+  box-shadow: 0 0 60px rgba(221,224,221,0.12), inset 0 0 40px rgba(221,224,221,0.06);
+  will-change: transform, opacity;
+}
+
 /* App */
 .app { position: relative; }
+.app--entered {
+  animation: rooms-in 0.6s ease 0.2s both;
+}
 
 /* Logo */
 .logo {
@@ -403,6 +448,41 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
 .room__plaque-line--gold { background: var(--gold); }
 .room__plaque-line--sage { background: var(--sage); }
 
+/* ── Journey cue (room 01 only) ── */
+@keyframes chevron-breathe {
+  0%, 100% { transform: translateY(0);   opacity: 0.35; }
+  50%       { transform: translateY(5px); opacity: 0.75; }
+}
+
+.room__journey {
+  position: absolute;
+  bottom: 2rem;
+  right: 8vw;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  opacity: 0;
+  transition: opacity 1s var(--ease) 1.2s;
+}
+.room--active .room__journey { opacity: 1; }
+
+.room__journey-text {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.room__journey-chevron {
+  color: var(--text-faint);
+  animation: chevron-breathe 2.2s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ── Mobile door pulse keyframes ── */
 @keyframes pulse-teal {
   0%, 100% { box-shadow: 0 0 18px rgba(45,212,191,0.15),  inset 0 0 14px rgba(45,212,191,0.07); }
@@ -450,4 +530,10 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
   .door--sand { animation: pulse-sand 3s ease-in-out infinite; }
   .door--gold { animation: pulse-gold 3s ease-in-out infinite; }
   .door--sage { animation: pulse-sage 3s ease-in-out infinite; }
+
+  .room__journey {
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 1.5rem;
+  }
 }

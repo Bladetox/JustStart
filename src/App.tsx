@@ -74,6 +74,7 @@ const rooms: Room[] = [
 export default function App() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [entered, setEntered] = useState(false)
+  const [exiting, setExiting] = useState(false)
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
@@ -95,9 +96,14 @@ export default function App() {
     sectionRefs.current[i]?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const handleEnter = () => {
+    setExiting(true)
+    setTimeout(() => setEntered(true), 950)
+  }
+
   if (!entered) {
     return (
-      <div className="entry">
+      <div className={`entry${exiting ? ' entry--exiting' : ''}`}>
         <div
           className="entry__bg"
           style={{ backgroundImage: 'url(https://iili.io/C1Y1sKg.jpg)' }}
@@ -107,7 +113,7 @@ export default function App() {
         <div className="entry__content">
           <p className="entry__label">Just Start</p>
           <h1 className="entry__title">Find your<br /><em>starting point.</em></h1>
-          <button className="entry__door" onClick={() => setEntered(true)}>
+          <button className="entry__door" onClick={handleEnter} disabled={exiting}>
             <span className="entry__door-frame">
               <span className="entry__door-text">Enter</span>
             </span>
@@ -118,7 +124,7 @@ export default function App() {
   }
 
   return (
-    <div className="app">
+    <div className="app app--entered">
       <div className="logo">Just Start</div>
 
       <nav className="progress" aria-label="Rooms">
@@ -168,6 +174,7 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
               className={`door door--${room.accent}`}
+              aria-label={`${room.cta} — ${room.eyebrow}`}
             >
               <span className="door__inner">
                 <span className="door__cta">{room.cta}</span>
@@ -182,6 +189,18 @@ export default function App() {
             <span className="room__plaque-text">{room.eyebrow}</span>
             <span className={`room__plaque-line room__plaque-line--${room.accent}`} />
           </div>
+
+          {/* Journey cue — room 01 only */}
+          {i === 0 && (
+            <div className="room__journey">
+              <span className="room__journey-text">Begin your journey</span>
+              <span className="room__journey-chevron" aria-hidden="true">
+                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L6 6.5L11 1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          )}
         </section>
       ))}
     </div>
