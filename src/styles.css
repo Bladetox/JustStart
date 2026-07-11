@@ -274,7 +274,7 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
 .room__no {
   font-size: 0.65rem;
   letter-spacing: 0.2em;
-  color: #ffffff;
+  color: var(--text-faint);
   font-variant-numeric: tabular-nums;
 }
 .room__no span { opacity: 0.4; }
@@ -390,7 +390,7 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
   font-size: 0.58rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: #ffffff;
 }
 .room__plaque-line {
   display: block;
