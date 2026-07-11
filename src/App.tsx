@@ -119,7 +119,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="logo">JustStart</div>
+      <div className="logo">Just Start</div>
 
       <nav className="progress" aria-label="Rooms">
         {rooms.map((r, i) => (
