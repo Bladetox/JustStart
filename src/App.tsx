@@ -21,7 +21,7 @@ const rooms: Room[] = [
     no: '01',
     eyebrow: 'The starting point',
     title: <>Find the model<br />that <em>fits you.</em></>,
-    description: 'Before the tools, before the funding—get clear on whether you are naturally product, service, or hybrid inclined.',
+    description: 'Before the tools, before the funding. Get clear on whether you are naturally product, service, or hybrid inclined.',
     cta: 'Take the 3-minute quiz',
     href: 'https://juststart-quizz.vercel.app',
     note: 'No sign-up. Instant result.',
