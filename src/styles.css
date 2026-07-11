@@ -403,7 +403,25 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
 .room__plaque-line--gold { background: var(--gold); }
 .room__plaque-line--sage { background: var(--sage); }
 
-/* Mobile */
+/* ── Mobile door pulse keyframes ── */
+@keyframes pulse-teal {
+  0%, 100% { box-shadow: 0 0 18px rgba(45,212,191,0.15),  inset 0 0 14px rgba(45,212,191,0.07); }
+  50%       { box-shadow: 0 0 36px rgba(45,212,191,0.30),  inset 0 0 24px rgba(45,212,191,0.14); }
+}
+@keyframes pulse-sand {
+  0%, 100% { box-shadow: 0 0 18px rgba(212,169,106,0.15), inset 0 0 14px rgba(212,169,106,0.07); }
+  50%       { box-shadow: 0 0 36px rgba(212,169,106,0.30), inset 0 0 24px rgba(212,169,106,0.14); }
+}
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 18px rgba(240,192,64,0.15),  inset 0 0 14px rgba(240,192,64,0.07); }
+  50%       { box-shadow: 0 0 36px rgba(240,192,64,0.30),  inset 0 0 24px rgba(240,192,64,0.14); }
+}
+@keyframes pulse-sage {
+  0%, 100% { box-shadow: 0 0 18px rgba(134,184,154,0.15), inset 0 0 14px rgba(134,184,154,0.07); }
+  50%       { box-shadow: 0 0 36px rgba(134,184,154,0.30), inset 0 0 24px rgba(134,184,154,0.14); }
+}
+
+/* ── Mobile overrides ── */
 @media (max-width: 640px) {
   .room {
     flex-direction: column;
@@ -413,5 +431,47 @@ button { cursor: crosshair; border: none; background: none; font-family: inherit
     gap: 3rem;
   }
   .room__right { align-self: center; }
-  .door { width: 90px; height: 150px; }
+  .room__desc { font-size: 0.85rem; }
+
+  .door {
+    width: 90px;
+    height: 150px;
+  }
+
+  /* Option A: always-on border glow + inner light */
+  .door--teal {
+    border-color: rgba(45,212,191,0.38);
+  }
+  .door--teal::before {
+    opacity: 1;
+  }
+  .door--sand {
+    border-color: rgba(212,169,106,0.38);
+  }
+  .door--sand::before {
+    opacity: 1;
+  }
+  .door--gold {
+    border-color: rgba(240,192,64,0.38);
+  }
+  .door--gold::before {
+    opacity: 1;
+  }
+  .door--sage {
+    border-color: rgba(134,184,154,0.38);
+  }
+  .door--sage::before {
+    opacity: 1;
+  }
+
+  /* Option A: always-on bright CTA text */
+  .door .door__cta {
+    color: var(--text);
+  }
+
+  /* Option D: breathing pulse animation per accent */
+  .door--teal { animation: pulse-teal 3s ease-in-out infinite; }
+  .door--sand { animation: pulse-sand 3s ease-in-out infinite; }
+  .door--gold { animation: pulse-gold 3s ease-in-out infinite; }
+  .door--sage { animation: pulse-sage 3s ease-in-out infinite; }
 }
