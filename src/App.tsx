@@ -63,9 +63,9 @@ const rooms: Room[] = [
     title: 'Fund what is',
     titleEm: 'already working.',
     description: 'Growth capital makes more sense when you have direction, a system, and a clear reason for the investment.',
-    cta: 'Explore Vula funding',
+    cta: 'Explore Funding Opportunities',
     href: 'https://vula-lac.vercel.app',
-    note: 'Funding for every stage.',
+    note: 'Funding for every stage of your business.',
     accent: 'sage',
     bg: 'https://iili.io/C1YvWMJ.jpg',
   },
@@ -107,7 +107,6 @@ export default function App() {
         <div className="entry__content">
           <p className="entry__label">Just Start</p>
           <h1 className="entry__title">Find your<br /><em>starting point.</em></h1>
-          <p className="entry__sub">Four rooms. One direction.</p>
           <button className="entry__door" onClick={() => setEntered(true)}>
             <span className="entry__door-frame">
               <span className="entry__door-text">Enter</span>
